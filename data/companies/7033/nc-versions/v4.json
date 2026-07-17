@@ -4,7 +4,7 @@
     "ncCodes": [
       {
         "code": "7602",
-        "count": 6
+        "count": 3
       }
     ],
     "nc": "7602"
@@ -14,7 +14,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "5010"
@@ -24,15 +24,15 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 32
+        "count": 16
       },
       {
         "code": "6900",
-        "count": 30
+        "count": 15
       },
       {
         "code": "7552",
-        "count": 12
+        "count": 6
       }
     ],
     "nc": "5010/6900/7552"
@@ -42,7 +42,7 @@
     "ncCodes": [
       {
         "code": "6201",
-        "count": 148
+        "count": 74
       }
     ],
     "nc": "6201"
@@ -52,11 +52,11 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 4
+        "count": 2
       },
       {
         "code": "7800",
-        "count": 4
+        "count": 2
       }
     ],
     "nc": "5010/7800"
@@ -66,7 +66,7 @@
     "ncCodes": [
       {
         "code": "7901",
-        "count": 6
+        "count": 3
       }
     ],
     "nc": "7901"
@@ -76,7 +76,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "5010"
@@ -86,7 +86,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "5010"
@@ -96,7 +96,7 @@
     "ncCodes": [
       {
         "code": "8250",
-        "count": 22
+        "count": 11
       }
     ],
     "nc": "8250"
@@ -106,7 +106,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 12
+        "count": 6
       }
     ],
     "nc": "5010"
@@ -116,7 +116,7 @@
     "ncCodes": [
       {
         "code": "7304",
-        "count": 10
+        "count": 5
       }
     ],
     "nc": "7304"
@@ -126,7 +126,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 8
+        "count": 4
       }
     ],
     "nc": "5010"
@@ -136,15 +136,15 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 74
+        "count": 37
       },
       {
         "code": "8250",
-        "count": 4
+        "count": 2
       },
       {
         "code": "6900",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "5010/8250/6900"
@@ -154,7 +154,7 @@
     "ncCodes": [
       {
         "code": "7800",
-        "count": 8
+        "count": 4
       }
     ],
     "nc": "7800"
@@ -164,7 +164,7 @@
     "ncCodes": [
       {
         "code": "7800",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "7800"
@@ -174,7 +174,7 @@
     "ncCodes": [
       {
         "code": "7603",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "7603"
@@ -184,7 +184,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "5010"
@@ -194,7 +194,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "5010"
@@ -204,7 +204,7 @@
     "ncCodes": [
       {
         "code": "7552",
-        "count": 4
+        "count": 2
       }
     ],
     "nc": "7552"
@@ -214,7 +214,7 @@
     "ncCodes": [
       {
         "code": "7800",
-        "count": 8
+        "count": 4
       }
     ],
     "nc": "7800"
@@ -224,15 +224,15 @@
     "ncCodes": [
       {
         "code": "7552",
-        "count": 8
+        "count": 4
       },
       {
         "code": "7800",
-        "count": 8
+        "count": 4
       },
       {
         "code": "5010",
-        "count": 6
+        "count": 3
       }
     ],
     "nc": "7552/7800/5010"
@@ -242,7 +242,7 @@
     "ncCodes": [
       {
         "code": "7300",
-        "count": 32
+        "count": 16
       }
     ],
     "nc": "7300"
@@ -252,7 +252,7 @@
     "ncCodes": [
       {
         "code": "7501",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "7501"
@@ -262,7 +262,7 @@
     "ncCodes": [
       {
         "code": "8205",
-        "count": 26
+        "count": 13
       }
     ],
     "nc": "8205"
@@ -272,7 +272,7 @@
     "ncCodes": [
       {
         "code": "7800",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "7800"
@@ -282,7 +282,7 @@
     "ncCodes": [
       {
         "code": "7603",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "7603"
@@ -292,15 +292,15 @@
     "ncCodes": [
       {
         "code": "8250",
-        "count": 18
+        "count": 9
       },
       {
         "code": "7800",
-        "count": 2
+        "count": 1
       },
       {
         "code": "7500",
-        "count": 2
+        "count": 1
       }
     ],
     "nc": "8250/7800/7500"
@@ -310,7 +310,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 198
+        "count": 99
       }
     ],
     "nc": "5010"
@@ -320,7 +320,7 @@
     "ncCodes": [
       {
         "code": "7800",
-        "count": 4
+        "count": 2
       }
     ],
     "nc": "7800"
@@ -330,7 +330,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 20
+        "count": 10
       }
     ],
     "nc": "5010"
@@ -340,7 +340,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 16
+        "count": 8
       }
     ],
     "nc": "5010"
@@ -350,7 +350,7 @@
     "ncCodes": [
       {
         "code": "5010",
-        "count": 12
+        "count": 6
       }
     ],
     "nc": "5010"
@@ -360,7 +360,7 @@
     "ncCodes": [
       {
         "code": "7800",
-        "count": 22
+        "count": 11
       }
     ],
     "nc": "7800"

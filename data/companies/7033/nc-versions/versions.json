@@ -1,0 +1,50 @@
+[
+  {
+    "version": 1,
+    "createdAt": "2026-07-17T09:49:02.677Z",
+    "entryCount": 33,
+    "source": "auto-merge",
+    "fileName": "7033NC.xlsx",
+    "mergeStats": {
+      "entryCount": 33,
+      "newParticulars": 394,
+      "updatedParticulars": 0,
+      "newDetails": 394,
+      "updatedDetails": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 0
+    }
+  },
+  {
+    "version": 3,
+    "createdAt": "2026-07-17T09:49:12.522Z",
+    "entryCount": 33,
+    "source": "build",
+    "fileName": "7033NC.xlsx",
+    "mergeStats": {
+      "entryCount": 33,
+      "newParticulars": 394,
+      "updatedParticulars": 0,
+      "newDetails": 394,
+      "updatedDetails": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 0
+    }
+  },
+  {
+    "version": 5,
+    "createdAt": "2026-07-17T09:49:42.841Z",
+    "entryCount": 33,
+    "source": "auto-merge",
+    "fileName": "7033NC.xlsx",
+    "mergeStats": {
+      "entryCount": 33,
+      "newParticulars": 0,
+      "updatedParticulars": 0,
+      "newDetails": 0,
+      "updatedDetails": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 394
+    }
+  }
+]

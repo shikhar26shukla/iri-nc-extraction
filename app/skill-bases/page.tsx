@@ -235,6 +235,26 @@ export default function SkillBasesPage() {
     a.click();
   };
 
+  const formatMergeStats = (v: SkillBaseVersion, type: "iris" | "nc") => {
+    if (!v.mergeStats) return null;
+    const s = v.mergeStats;
+    const newLabel = type === "nc" ? "new details" : "new particulars";
+    const updatedLabel = type === "nc" ? "updated details" : "updated particulars";
+    const newCount = s.newDetails ?? s.newParticulars;
+    const updatedCount = s.updatedDetails ?? s.updatedParticulars;
+    return (
+      <p className="mt-1 text-xs text-muted-foreground">
+        Added: {newCount} {newLabel}
+        {" · "}
+        Updated: {updatedCount} {updatedLabel}
+        {" · "}
+        New codes: {s.newCodes}
+        {" · "}
+        Duplicates merged: {s.duplicatesMerged}
+      </p>
+    );
+  };
+
   const formatVersionSource = (source: SkillBaseVersion["source"]) => {
     const labels: Record<SkillBaseVersion["source"], string> = {
       build: "Build",
@@ -271,13 +291,13 @@ export default function SkillBasesPage() {
               <div className="mb-4 flex flex-wrap items-center gap-2">
                 <Button
                   size="sm"
-                  onClick={() => buildInputRef.current?.click()}
+                  onClick={() => irisBuildInputRef.current?.click()}
                 >
                   <Upload className="h-4 w-4" />
                   Build New Skill Base
                 </Button>
                 <input
-                  ref={buildInputRef}
+                  ref={irisBuildInputRef}
                   type="file"
                   accept=".xlsx,.xls,.csv"
                   className="hidden"
@@ -290,13 +310,13 @@ export default function SkillBasesPage() {
                 <Button
                   variant="secondary"
                   size="sm"
-                  onClick={() => mergeInputRef.current?.click()}
+                  onClick={() => irisMergeInputRef.current?.click()}
                 >
                   <Upload className="h-4 w-4" />
                   Merge Into Skill Base
                 </Button>
                 <input
-                  ref={mergeInputRef}
+                  ref={irisMergeInputRef}
                   type="file"
                   accept=".xlsx,.xls,.csv"
                   className="hidden"
@@ -322,14 +342,14 @@ export default function SkillBasesPage() {
                 </Button>
               </div>
 
-              {versions.length > 0 && (
+              {irisVersions.length > 0 && (
                 <div className="mb-6 rounded-lg border bg-muted/30 p-4">
                   <div className="mb-2 flex items-center gap-2 text-sm font-medium">
                     <History className="h-4 w-4" />
                     Version history
                   </div>
                   <ul className="space-y-2 text-sm">
-                    {versions.map((v) => (
+                    {irisVersions.map((v) => (
                       <li
                         key={v.version}
                         className="flex flex-wrap items-center justify-between gap-2 rounded border bg-background px-3 py-2"
@@ -342,22 +362,12 @@ export default function SkillBasesPage() {
                               {new Date(v.createdAt).toLocaleString()}
                             </span>
                           </span>
-                          {v.mergeStats && (
-                            <p className="mt-1 text-xs text-muted-foreground">
-                              Added: {v.mergeStats.newParticulars} new particulars
-                              {" · "}
-                              Updated: {v.mergeStats.updatedParticulars}
-                              {" · "}
-                              New codes: {v.mergeStats.newCodes}
-                              {" · "}
-                              Duplicates merged: {v.mergeStats.duplicatesMerged}
-                            </p>
-                          )}
+                          {formatMergeStats(v, "iris")}
                         </div>
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleRestore(v.version)}
+                          onClick={() => handleIrisRestore(v.version)}
                         >
                           <RotateCcw className="h-3 w-3" />
                           Restore
@@ -389,20 +399,44 @@ export default function SkillBasesPage() {
 
           <TabsContent value="nc">
             <Card>
-              <div className="mb-4 flex gap-2">
-                <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium hover:bg-accent">
+              <div className="mb-4 flex flex-wrap items-center gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => ncBuildInputRef.current?.click()}
+                >
                   <Upload className="h-4 w-4" />
-                  Upload NC skill base
-                  <input
-                    type="file"
-                    accept=".xlsx,.xls,.csv"
-                    className="hidden"
-                    onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (f) handleNcUpload(f);
-                    }}
-                  />
-                </label>
+                  Build New Skill Base
+                </Button>
+                <input
+                  ref={ncBuildInputRef}
+                  type="file"
+                  accept=".xlsx,.xls,.csv"
+                  className="hidden"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) handleNcUpload("build", f);
+                    e.target.value = "";
+                  }}
+                />
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => ncMergeInputRef.current?.click()}
+                >
+                  <Upload className="h-4 w-4" />
+                  Merge Into Skill Base
+                </Button>
+                <input
+                  ref={ncMergeInputRef}
+                  type="file"
+                  accept=".xlsx,.xls,.csv"
+                  className="hidden"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) handleNcUpload("merge", f);
+                    e.target.value = "";
+                  }}
+                />
                 <Button variant="secondary" size="sm" onClick={() => exportCsv("nc")}>
                   <Download className="h-4 w-4" />
                   Export CSV
@@ -418,6 +452,43 @@ export default function SkillBasesPage() {
                   Delete NC Skill Base
                 </Button>
               </div>
+
+              {ncVersions.length > 0 && (
+                <div className="mb-6 rounded-lg border bg-muted/30 p-4">
+                  <div className="mb-2 flex items-center gap-2 text-sm font-medium">
+                    <History className="h-4 w-4" />
+                    Version history
+                  </div>
+                  <ul className="space-y-2 text-sm">
+                    {ncVersions.map((v) => (
+                      <li
+                        key={v.version}
+                        className="flex flex-wrap items-center justify-between gap-2 rounded border bg-background px-3 py-2"
+                      >
+                        <div>
+                          <span>
+                            Version {v.version} — {formatVersionSource(v.source)}
+                            {v.fileName ? ` — ${v.fileName}` : ""} — {v.entryCount} entries
+                            <span className="ml-2 text-xs text-muted-foreground">
+                              {new Date(v.createdAt).toLocaleString()}
+                            </span>
+                          </span>
+                          {formatMergeStats(v, "nc")}
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleNcRestore(v.version)}
+                        >
+                          <RotateCcw className="h-3 w-3" />
+                          Restore
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {loading ? (
                 <p className="text-sm text-muted-foreground">Loading…</p>
               ) : (

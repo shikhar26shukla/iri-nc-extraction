@@ -89,5 +89,47 @@
       "newCodes": 1,
       "duplicatesMerged": 1
     }
+  },
+  {
+    "version": 12,
+    "createdAt": "2026-07-17T09:49:02.106Z",
+    "entryCount": 305,
+    "source": "auto-merge",
+    "fileName": "test7033.xlsx",
+    "mergeStats": {
+      "entryCount": 305,
+      "newParticulars": 372,
+      "updatedParticulars": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 0
+    }
+  },
+  {
+    "version": 14,
+    "createdAt": "2026-07-17T09:49:02.589Z",
+    "entryCount": 305,
+    "source": "auto-merge",
+    "fileName": "test7033.xlsx",
+    "mergeStats": {
+      "entryCount": 305,
+      "newParticulars": 0,
+      "updatedParticulars": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 372
+    }
+  },
+  {
+    "version": 16,
+    "createdAt": "2026-07-17T09:49:12.688Z",
+    "entryCount": 305,
+    "source": "build",
+    "fileName": "test7033.xlsx",
+    "mergeStats": {
+      "entryCount": 305,
+      "newParticulars": 372,
+      "updatedParticulars": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 0
+    }
   }
 ]

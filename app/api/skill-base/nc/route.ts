@@ -80,7 +80,6 @@ export async function POST(request: NextRequest) {
       success: true,
       mode,
       count: stats.entryCount,
-      entryCount: stats.entryCount,
       ...stats,
     });
   } catch (error) {

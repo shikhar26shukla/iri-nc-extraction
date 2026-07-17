@@ -3,10 +3,11 @@ import fs from "fs/promises";
 import path from "path";
 import {
   ensureCompany,
-  writeCompanyKnowledgeBase,
 } from "@/lib/companies/store";
 import { writeIrisSkillBaseWithSnapshot } from "@/lib/companies/skill-base-versions";
+import { writeNcSkillBaseWithSnapshot } from "@/lib/companies/nc-skill-base-versions";
 import { buildIrisSkillBaseFromWorkbook } from "@/lib/iris/build-skill-base";
+import { buildNcSkillBaseFromWorkbook } from "@/lib/nc/build-skill-base";
 import { countUniqueIrisCodes, upsertIrisSkillEntry } from "@/lib/iris/skill-base";
 import { loadWorkbookBuffer } from "@/lib/excel/reader";
 import { normalizeDetails } from "@/lib/normalization/text";
@@ -69,13 +70,54 @@ async function main() {
   const irisSeed = path.join(root, "data", "seed", "iris-skill-base.xlsx");
   const ncSeed = path.join(root, "data", "seed", "nc-skill-base.xlsx");
   const test7033 = path.join(root, "test7033.xlsx");
+  const nc7033 = path.join(root, "docs", "7033NC.xlsx");
 
-  const ncEntries = await parseNcSeed(ncSeed);
-  await writeCompanyKnowledgeBase(COMPANY_ID, "nc", ncEntries);
+  let ncEntries: NcSkillEntry[];
+  let ncSource = "seed";
+  let ncBuildStats = {
+    entryCount: 0,
+    rowsRead: 0,
+    codesFound: 0,
+    newDetails: 0,
+    updatedDetails: 0,
+    newCodes: 0,
+    duplicatesMerged: 0,
+  };
+
+  try {
+    await fs.access(nc7033);
+    const buffer = await fs.readFile(nc7033);
+    const workbook = await loadWorkbookBuffer(buffer);
+    const result = buildNcSkillBaseFromWorkbook(workbook, "build", []);
+    ncEntries = result.entries;
+    ncBuildStats = result.stats;
+    ncSource = "build";
+    console.log(
+      `Built NC skill base from docs/7033NC.xlsx: ${result.stats.entryCount} entries, ${result.stats.codesFound} unique codes, ${result.stats.rowsRead} rows`
+    );
+  } catch {
+    ncEntries = await parseNcSeed(ncSeed);
+    ncBuildStats.entryCount = ncEntries.length;
+    console.log(`docs/7033NC.xlsx not found — using NC seed (${ncEntries.length} entries)`);
+  }
+
+  await writeNcSkillBaseWithSnapshot(COMPANY_ID, ncEntries, {
+    source: ncSource === "build" ? "build" : "seed",
+    fileName: ncSource === "build" ? "7033NC.xlsx" : "nc-skill-base.xlsx",
+    mergeStats: {
+      entryCount: ncBuildStats.entryCount,
+      newParticulars: ncBuildStats.newDetails,
+      updatedParticulars: ncBuildStats.updatedDetails,
+      newDetails: ncBuildStats.newDetails,
+      updatedDetails: ncBuildStats.updatedDetails,
+      newCodes: ncBuildStats.newCodes,
+      duplicatesMerged: ncBuildStats.duplicatesMerged,
+    },
+  });
 
   let irisEntries: IrisSkillEntry[];
-  let source = "seed";
-  let buildStats = {
+  let irisSource = "seed";
+  let irisBuildStats = {
     entryCount: 0,
     newParticulars: 0,
     updatedParticulars: 0,
@@ -91,26 +133,26 @@ async function main() {
     const workbook = await loadWorkbookBuffer(buffer);
     const result = buildIrisSkillBaseFromWorkbook(workbook, "build", []);
     irisEntries = result.entries;
-    buildStats = result.stats;
-    source = "build";
+    irisBuildStats = result.stats;
+    irisSource = "build";
     console.log(
       `Built IRIS skill base from test7033.xlsx: ${result.stats.entryCount} entries, ${result.stats.codesFound} unique codes, ${result.stats.rowsRead} rows`
     );
   } catch {
     irisEntries = await parseIrisSeed(irisSeed);
-    buildStats.entryCount = irisEntries.length;
+    irisBuildStats.entryCount = irisEntries.length;
     console.log(`test7033.xlsx not found — using seed (${irisEntries.length} entries)`);
   }
 
   await writeIrisSkillBaseWithSnapshot(COMPANY_ID, irisEntries, {
-    source: source === "build" ? "build" : "seed",
-    fileName: source === "build" ? "test7033.xlsx" : "iris-skill-base.xlsx",
+    source: irisSource === "build" ? "build" : "seed",
+    fileName: irisSource === "build" ? "test7033.xlsx" : "iris-skill-base.xlsx",
     mergeStats: {
-      entryCount: buildStats.entryCount,
-      newParticulars: buildStats.newParticulars,
-      updatedParticulars: buildStats.updatedParticulars,
-      newCodes: buildStats.newCodes,
-      duplicatesMerged: buildStats.duplicatesMerged,
+      entryCount: irisBuildStats.entryCount,
+      newParticulars: irisBuildStats.newParticulars,
+      updatedParticulars: irisBuildStats.updatedParticulars,
+      newCodes: irisBuildStats.newCodes,
+      duplicatesMerged: irisBuildStats.duplicatesMerged,
     },
   });
 

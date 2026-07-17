@@ -8,10 +8,11 @@ import {
 import { countUniqueIrisCodes } from "@/lib/iris/skill-base";
 import { processIrisFile } from "@/lib/iris/pipeline";
 import { processNcFile } from "@/lib/nc/pipeline";
-import type { IrisSkillEntry } from "@/types";
+import type { IrisSkillEntry, NcSkillEntry } from "@/types";
 
 const COMPANY_ID = "7033";
 const MIN_UNIQUE_CODES = 10;
+const MIN_NC_ENTRIES = 30;
 
 async function createUncodedWorkbook(): Promise<Buffer> {
   const workbook = new ExcelJS.Workbook();
@@ -23,10 +24,21 @@ async function createUncodedWorkbook(): Promise<Buffer> {
   return Buffer.from(arrayBuffer);
 }
 
+async function createUncodedNcWorkbook(): Promise<Buffer> {
+  const workbook = new ExcelJS.Workbook();
+  const sheet = workbook.addWorksheet("Sheet1");
+  sheet.getRow(1).values = ["Details", "A/C Ref", "Net Amount"];
+  sheet.getRow(2).values = ["Office supplies", "SUP001", 100];
+  sheet.getRow(3).values = ["Fuel purchase", "FUEL001", 200];
+  const arrayBuffer = await workbook.xlsx.writeBuffer();
+  return Buffer.from(arrayBuffer);
+}
+
 async function main() {
   const root = process.cwd();
   const irisFixture = path.join(root, "test7033.xlsx");
-  const ncFixture = path.join(root, "data", "fixtures", "nc-sample.xlsx");
+  const ncFixture = path.join(root, "docs", "7033NC.xlsx");
+  const ncSampleFixture = path.join(root, "data", "fixtures", "nc-sample.xlsx");
 
   console.log("=== Auto-merge: empty KB + coded extract ===");
   await writeCompanyKnowledgeBase(COMPANY_ID, "iris", []);
@@ -143,17 +155,101 @@ async function main() {
   }
   console.log("PASS: Output workbook Type column verified");
 
-  console.log("\n=== NC Fixture ===");
+  console.log("\n=== NC auto-merge: empty KB + coded extract ===");
+  await writeCompanyKnowledgeBase(COMPANY_ID, "nc", []);
+  const emptyNcKb = await readCompanyKnowledgeBase<NcSkillEntry>(COMPANY_ID, "nc");
+  if (emptyNcKb.length !== 0) {
+    console.error("FAIL: Could not clear NC skill base for auto-merge test");
+    process.exit(1);
+  }
+
+  let ncBuffer: Buffer;
   try {
-    const ncBuffer = await fs.readFile(ncFixture);
-    const ncResult = await processNcFile(ncBuffer, "nc-sample.xlsx", COMPANY_ID);
-    console.log(JSON.stringify(ncResult.log, null, 2));
+    ncBuffer = await fs.readFile(ncFixture);
+  } catch {
+    console.error("FAIL: docs/7033NC.xlsx not found for NC auto-merge test");
+    process.exit(1);
+  }
+
+  const ncResult = await processNcFile(ncBuffer, "7033NC.xlsx", COMPANY_ID);
+
+  if (!ncResult.log.skillBaseUpdated) {
+    console.error("FAIL: Coded NC extract did not update skill base");
+    process.exit(1);
+  }
+  console.log("PASS: Coded NC extract updated skill base");
+
+  const afterNcMerge = await readCompanyKnowledgeBase<NcSkillEntry>(COMPANY_ID, "nc");
+  if (afterNcMerge.length < MIN_NC_ENTRIES) {
+    console.error(
+      `FAIL: Expected at least ${MIN_NC_ENTRIES} NC entries after auto-merge, got ${afterNcMerge.length}`
+    );
+    process.exit(1);
+  }
+  console.log(`PASS: NC skill base has ${afterNcMerge.length} entries after auto-merge`);
+
+  if (!ncResult.log.skillBaseMerge || ncResult.log.skillBaseMerge.entryCount === 0) {
+    console.error("FAIL: Missing NC skill base merge stats");
+    process.exit(1);
+  }
+  console.log("PASS: NC merge stats returned", ncResult.log.skillBaseMerge);
+
+  const ncOutputPath = path.join(outDir, ncResult.outputName);
+  await fs.writeFile(ncOutputPath, ncResult.buffer);
+
+  let outputMissingNc = 0;
+  let outputRowsWithNc = 0;
+  const ncOutputWb = new ExcelJS.Workbook();
+  await ncOutputWb.xlsx.readFile(ncOutputPath);
+  const ncOutputSheet = ncOutputWb.worksheets[0];
+  ncOutputSheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+    if (rowNumber === 1) return;
+    const details = String(row.getCell(1).value || "").trim();
+    const nc = String(row.getCell(2).value || "").trim();
+    if (details && !nc) outputMissingNc += 1;
+    if (nc) outputRowsWithNc += 1;
+  });
+  if (outputMissingNc > 0) {
+    console.error(`FAIL: NC output workbook has ${outputMissingNc} rows without N/C`);
+    process.exit(1);
+  }
+  if (outputRowsWithNc === 0) {
+    console.error("FAIL: NC output workbook has no N/C codes populated");
+    process.exit(1);
+  }
+  console.log(`PASS: NC output workbook has N/C populated (${outputRowsWithNc} rows)`);
+
+  console.log("\n=== NC auto-merge: uncoded extract must not modify KB ===");
+  const ncKbBeforeUncoded = await readCompanyKnowledgeBase<NcSkillEntry>(COMPANY_ID, "nc");
+  const uncodedNcBuffer = await createUncodedNcWorkbook();
+  const uncodedNcResult = await processNcFile(
+    uncodedNcBuffer,
+    "uncoded-nc-test.xlsx",
+    COMPANY_ID
+  );
+  const ncKbAfterUncoded = await readCompanyKnowledgeBase<NcSkillEntry>(COMPANY_ID, "nc");
+
+  if (uncodedNcResult.log.skillBaseUpdated) {
+    console.error("FAIL: Uncoded NC extract modified skill base");
+    process.exit(1);
+  }
+  if (ncKbAfterUncoded.length !== ncKbBeforeUncoded.length) {
+    console.error("FAIL: NC skill base entry count changed after uncoded extract");
+    process.exit(1);
+  }
+  console.log("PASS: Uncoded NC extract did not modify skill base");
+
+  console.log("\n=== NC sample fixture (optional) ===");
+  try {
+    const ncSampleBuffer = await fs.readFile(ncSampleFixture);
+    const ncSampleResult = await processNcFile(ncSampleBuffer, "nc-sample.xlsx", COMPANY_ID);
+    console.log(JSON.stringify(ncSampleResult.log, null, 2));
     await fs.writeFile(
-      path.join(outDir, ncResult.outputName),
-      ncResult.buffer
+      path.join(outDir, ncSampleResult.outputName),
+      ncSampleResult.buffer
     );
   } catch (err) {
-    console.log("NC fixture skipped or failed:", err instanceof Error ? err.message : err);
+    console.log("NC sample fixture skipped or failed:", err instanceof Error ? err.message : err);
   }
 
   console.log("\nOutput written to tmp/validation/");

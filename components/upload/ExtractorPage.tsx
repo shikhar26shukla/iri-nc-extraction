@@ -107,16 +107,10 @@ export function ExtractorPage({ service, title, description }: ExtractorPageProp
           downloadUrl: url,
         });
 
-        if (service === "iris" && result.log.skillBaseUpdated) {
-          await refreshCompanies();
-          window.dispatchEvent(
-            new CustomEvent("skillBaseUpdated", {
-              detail: { companyId: selectedCompanyId },
-            })
-          );
-        }
-
-        if (service === "nc" && result.log.skillBaseUpdated) {
+        if (
+          (service === "iris" || service === "nc") &&
+          result.log.skillBaseUpdated
+        ) {
           await refreshCompanies();
           window.dispatchEvent(
             new CustomEvent("skillBaseUpdated", {

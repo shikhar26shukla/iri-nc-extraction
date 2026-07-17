@@ -53,7 +53,7 @@ function accumulateFromWorkbook(
   };
 } {
   const { detection } = parseSimpleSheet(workbook, "iris");
-  const worksheet = workbook.worksheets[0];
+  const worksheet = workbook.getWorksheet(detection.sheetName);
   const accumulators = new Map<string, RowAccumulator>();
   let rowsRead = 0;
   const rowStats = {

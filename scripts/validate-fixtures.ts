@@ -239,6 +239,54 @@ async function main() {
   }
   console.log("PASS: Uncoded NC extract did not modify skill base");
 
+  console.log("\n=== NC daybook export: 7547 (preamble headers) ===");
+  const daybookFixture = path.join(root, "docs", "7547 NOV 24 - Copy.xlsx");
+  try {
+    await fs.access(daybookFixture);
+    const daybookBuffer = await fs.readFile(daybookFixture);
+    const daybookResult = await processNcFile(
+      daybookBuffer,
+      "7547 NOV 24 - Copy.xlsx",
+      COMPANY_ID
+    );
+
+    if (daybookResult.log.rowsProcessed === 0) {
+      console.error("FAIL: 7547 daybook extract processed zero rows");
+      process.exit(1);
+    }
+    console.log(`PASS: 7547 daybook extracted ${daybookResult.log.rowsProcessed} rows`);
+
+    const daybookOutputPath = path.join(outDir, daybookResult.outputName);
+    await fs.writeFile(daybookOutputPath, daybookResult.buffer);
+    const daybookWb = new ExcelJS.Workbook();
+    await daybookWb.xlsx.readFile(daybookOutputPath);
+    const daybookSheet = daybookWb.worksheets[0];
+    let daybookMissingNc = 0;
+    let daybookWithNc = 0;
+    daybookSheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+      if (rowNumber === 1) return;
+      const details = String(row.getCell(1).value || "").trim();
+      const nc = String(row.getCell(2).value || "").trim();
+      if (details && !nc) daybookMissingNc += 1;
+      if (nc) daybookWithNc += 1;
+    });
+    if (daybookMissingNc > 0) {
+      console.error(`FAIL: 7547 output has ${daybookMissingNc} rows without N/C`);
+      process.exit(1);
+    }
+    if (daybookWithNc === 0) {
+      console.error("FAIL: 7547 output has no N/C codes populated");
+      process.exit(1);
+    }
+    console.log(`PASS: 7547 output workbook has N/C populated (${daybookWithNc} rows)`);
+  } catch (err) {
+    console.error(
+      "FAIL: 7547 daybook fixture:",
+      err instanceof Error ? err.message : err
+    );
+    process.exit(1);
+  }
+
   console.log("\n=== NC sample fixture (optional) ===");
   try {
     const ncSampleBuffer = await fs.readFile(ncSampleFixture);

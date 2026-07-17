@@ -59,7 +59,8 @@ function looksLikeTransactionType(value: string): boolean {
 function findTypeColumnIndex(
   worksheet: ExcelJS.Worksheet,
   headers: string[],
-  particularIdx: number
+  particularIdx: number,
+  headerRowNumber: number
 ): number | undefined {
   const byHeader = findColumnIndex(headers, [
     "type",
@@ -77,7 +78,7 @@ function findTypeColumnIndex(
   let typedRows = 0;
   const sampleLimit = 8;
   worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-    if (rowNumber <= 1 || typedRows >= sampleLimit) return;
+    if (rowNumber <= headerRowNumber || typedRows >= sampleLimit) return;
     const value = cellText(row.getCell(candidate + 1).value);
     if (looksLikeTransactionType(value)) typedRows += 1;
   });
@@ -85,8 +86,8 @@ function findTypeColumnIndex(
   return typedRows > 0 ? candidate : undefined;
 }
 
-function getHeaderRow(worksheet: ExcelJS.Worksheet): string[] {
-  const row = worksheet.getRow(1);
+function getHeaderRowAt(worksheet: ExcelJS.Worksheet, rowNumber: number): string[] {
+  const row = worksheet.getRow(rowNumber);
   const headers: string[] = [];
   const colCount = Math.max(worksheet.columnCount, 20);
   for (let c = 1; c <= colCount; c++) {
@@ -96,6 +97,97 @@ function getHeaderRow(worksheet: ExcelJS.Worksheet): string[] {
     headers.pop();
   }
   return headers;
+}
+
+const MAX_HEADER_SCAN_ROWS = 30;
+const MIN_HEADER_SCORE = 3;
+
+interface HeaderCandidate {
+  sheetName: string;
+  worksheet: ExcelJS.Worksheet;
+  headerRowNumber: number;
+  headers: string[];
+  score: number;
+  dataRowCount: number;
+}
+
+function scoreHeaderRow(headers: string[], mode: "iris" | "nc"): number {
+  if (mode === "iris") {
+    let score = 0;
+    if (findColumnIndex(headers, PARTICULAR_ALIASES) !== undefined) score += 3;
+    if (findIrisColumnIndex(headers) !== undefined) score += 2;
+    if (
+      findColumnIndex(headers, ["type", "tran type", "transaction type"]) !==
+      undefined
+    ) {
+      score += 1;
+    }
+    if (findColumnIndex(headers, ["date"]) !== undefined) score += 1;
+    return score;
+  }
+
+  let score = 0;
+  if (findColumnIndex(headers, DETAILS_ALIASES) !== undefined) score += 3;
+  if (findColumnIndex(headers, NC_ALIASES) !== undefined) score += 2;
+  if (
+    findColumnIndex(headers, ["supplier", "a/c ref", "account name"]) !== undefined
+  ) {
+    score += 1;
+  }
+  if (findColumnIndex(headers, ["tran no.", "tran no"]) !== undefined) score += 1;
+  return score;
+}
+
+function countDataRows(worksheet: ExcelJS.Worksheet, headerRowNumber: number): number {
+  let count = 0;
+  worksheet.eachRow({ includeEmpty: false }, (_row, rowNumber) => {
+    if (rowNumber <= headerRowNumber) return;
+    count += 1;
+  });
+  return count;
+}
+
+function findBestHeaderCandidate(
+  workbook: ExcelJS.Workbook,
+  mode: "iris" | "nc"
+): HeaderCandidate | null {
+  let best: HeaderCandidate | null = null;
+
+  for (const worksheet of workbook.worksheets) {
+    const scanLimit = Math.min(MAX_HEADER_SCAN_ROWS, worksheet.rowCount || MAX_HEADER_SCAN_ROWS);
+    for (let rowNumber = 1; rowNumber <= scanLimit; rowNumber++) {
+      const headers = getHeaderRowAt(worksheet, rowNumber);
+      if (!headers.some((h) => h)) continue;
+
+      const score = scoreHeaderRow(headers, mode);
+      if (score < MIN_HEADER_SCORE) continue;
+
+      const dataRowCount = countDataRows(worksheet, rowNumber);
+      if (
+        !best ||
+        score > best.score ||
+        (score === best.score && dataRowCount > best.dataRowCount)
+      ) {
+        best = {
+          sheetName: worksheet.name,
+          worksheet,
+          headerRowNumber: rowNumber,
+          headers,
+          score,
+          dataRowCount,
+        };
+      }
+    }
+  }
+
+  return best;
+}
+
+function getWorksheetByName(
+  workbook: ExcelJS.Workbook,
+  sheetName: string
+): ExcelJS.Worksheet | undefined {
+  return workbook.getWorksheet(sheetName) ?? workbook.worksheets.find((s) => s.name === sheetName);
 }
 
 export async function loadWorkbookBuffer(buffer: Buffer): Promise<ExcelJS.Workbook> {
@@ -119,34 +211,50 @@ export function parseSimpleSheet(
     throw new Error("Workbook has no sheets.");
   }
 
-  if (workbook.worksheets.length > 1) {
-    warnings.push(
-      `File has ${workbook.worksheets.length} sheets. Only the first sheet will be processed.`
+  const candidate = findBestHeaderCandidate(workbook, mode);
+  if (!candidate) {
+    if (mode === "iris") {
+      throw new Error(
+        "Could not find a Particular column (Particular, Particulars, Description, Narrative, or Payee). " +
+          "Daybook exports may have report headers above the column row — ensure Details/Particular headers exist."
+      );
+    }
+    throw new Error(
+      "Could not find a Details column (Details, Particular, Description, Narrative, Payee, or Supplier). " +
+        "Daybook exports may have report headers above the column row — ensure Details and N/C headers exist."
     );
   }
 
-  const worksheet = workbook.worksheets[0];
-  const headers = getHeaderRow(worksheet);
+  const { worksheet, sheetName, headerRowNumber, headers } = candidate;
+  const headerRowIndex = headerRowNumber - 1;
+  const dataStartRow = headerRowNumber;
+
+  if (headerRowNumber > 1 || sheetName !== workbook.worksheets[0]?.name) {
+    warnings.push(
+      `Auto-selected sheet "${sheetName}" with headers on row ${headerRowNumber} (${candidate.dataRowCount} data rows).`
+    );
+  }
+
+  if (workbook.worksheets.length > 1 && sheetName === workbook.worksheets[0]?.name) {
+    warnings.push(
+      `File has ${workbook.worksheets.length} sheets. Using "${sheetName}" based on header detection.`
+    );
+  }
 
   if (mode === "iris") {
-    const particularIdx = findColumnIndex(headers, PARTICULAR_ALIASES);
-    if (particularIdx === undefined) {
-      throw new Error(
-        "Row 1 must include a Particular column (Particular, Particulars, Description, Narrative, or Payee)."
-      );
-    }
+    const particularIdx = findColumnIndex(headers, PARTICULAR_ALIASES)!;
 
     return {
       warnings,
       detection: {
-        sheetName: worksheet.name,
+        sheetName,
         sheetType: "bank",
-        headerRowIndex: 0,
-        dataStartRow: 1,
+        headerRowIndex,
+        dataStartRow,
         columnMap: {
           particular: particularIdx,
           iris: findIrisColumnIndex(headers),
-          type: findTypeColumnIndex(worksheet, headers, particularIdx),
+          type: findTypeColumnIndex(worksheet, headers, particularIdx, headerRowNumber),
           notes: findColumnIndex(headers, ["notes", "category"]),
           date: findColumnIndex(headers, ["date"]),
         },
@@ -154,15 +262,14 @@ export function parseSimpleSheet(
     };
   }
 
-  const detailsIdx = findColumnIndex(headers, DETAILS_ALIASES);
-  if (detailsIdx === undefined) {
-    throw new Error(
-      "Row 1 must include a Details column (Details, Particular, Description, Narrative, Payee, or Supplier)."
-    );
-  }
+  const detailsIdx = findColumnIndex(headers, DETAILS_ALIASES)!;
 
   let supplierIdx: number | undefined;
-  const supplierHeaderIdx = findColumnIndex(headers, ["supplier", "a/c ref", "account name"]);
+  const supplierHeaderIdx = findColumnIndex(headers, [
+    "supplier",
+    "a/c ref",
+    "account name",
+  ]);
   if (supplierHeaderIdx !== undefined) {
     supplierIdx = supplierHeaderIdx;
   } else if (detailsIdx > 0) {
@@ -172,10 +279,10 @@ export function parseSimpleSheet(
   return {
     warnings,
     detection: {
-      sheetName: worksheet.name,
+      sheetName,
       sheetType: "expense",
-      headerRowIndex: 0,
-      dataStartRow: 1,
+      headerRowIndex,
+      dataStartRow,
       columnMap: {
         details: detailsIdx,
         supplier: supplierIdx,
@@ -197,7 +304,7 @@ export function isCodedIrisFile(workbook: ExcelJS.Workbook): boolean {
     const irisCol = detection.columnMap.iris;
     if (irisCol === undefined) return false;
 
-    const worksheet = workbook.worksheets[0];
+    const worksheet = getWorksheetByName(workbook, detection.sheetName);
     if (!worksheet) return false;
 
     let found = false;
@@ -218,7 +325,7 @@ export function isCodedNcFile(workbook: ExcelJS.Workbook): boolean {
     const ncCol = detection.columnMap.nc;
     if (ncCol === undefined) return false;
 
-    const worksheet = workbook.worksheets[0];
+    const worksheet = getWorksheetByName(workbook, detection.sheetName);
     if (!worksheet) return false;
 
     let found = false;

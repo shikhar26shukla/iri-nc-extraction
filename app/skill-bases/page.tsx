@@ -5,10 +5,11 @@ import { PageHeader, Card } from "@/components/layout/page-header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SkillBaseTable } from "@/components/tables/SkillBaseTable";
 import { Button } from "@/components/ui/button";
-import { Upload, Download, History, RotateCcw, Trash2 } from "lucide-react";
+import { Upload, Download, History, Trash2 } from "lucide-react";
 import { CompanySelector } from "@/components/company/CompanySelector";
 import { CompanyGate } from "@/components/company/CompanyGate";
 import { useCompany } from "@/components/company/CompanyProvider";
+import { SkillBaseVersionHistoryDialog } from "@/components/skill-base/SkillBaseVersionHistoryDialog";
 import type { IrisSkillEntry, NcSkillEntry, SkillBaseVersion } from "@/types";
 
 interface IrisTableRow extends IrisSkillEntry {
@@ -44,6 +45,8 @@ export default function SkillBasesPage() {
   const [ncVersions, setNcVersions] = useState<SkillBaseVersion[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploadMsg, setUploadMsg] = useState("");
+  const [irisHistoryOpen, setIrisHistoryOpen] = useState(false);
+  const [ncHistoryOpen, setNcHistoryOpen] = useState(false);
   const irisBuildInputRef = useRef<HTMLInputElement>(null);
   const irisMergeInputRef = useRef<HTMLInputElement>(null);
   const ncBuildInputRef = useRef<HTMLInputElement>(null);
@@ -168,6 +171,7 @@ export default function SkillBasesPage() {
       return;
     }
     setUploadMsg(`Restored version ${version} — ${data.count} entries`);
+    setIrisHistoryOpen(false);
     await loadData();
   };
 
@@ -186,6 +190,7 @@ export default function SkillBasesPage() {
       return;
     }
     setUploadMsg(`Restored NC version ${version} — ${data.count} entries`);
+    setNcHistoryOpen(false);
     await loadData();
   };
 
@@ -233,39 +238,6 @@ export default function SkillBasesPage() {
     a.href = url;
     a.download = `${type}-skill-base.csv`;
     a.click();
-  };
-
-  const formatMergeStats = (v: SkillBaseVersion, type: "iris" | "nc") => {
-    if (!v.mergeStats) return null;
-    const s = v.mergeStats;
-    const newLabel = type === "nc" ? "new details" : "new particulars";
-    const updatedLabel = type === "nc" ? "updated details" : "updated particulars";
-    const newCount = s.newDetails ?? s.newParticulars;
-    const updatedCount = s.updatedDetails ?? s.updatedParticulars;
-    return (
-      <p className="mt-1 text-xs text-muted-foreground">
-        Added: {newCount} {newLabel}
-        {" · "}
-        Updated: {updatedCount} {updatedLabel}
-        {" · "}
-        New codes: {s.newCodes}
-        {" · "}
-        Duplicates merged: {s.duplicatesMerged}
-      </p>
-    );
-  };
-
-  const formatVersionSource = (source: SkillBaseVersion["source"]) => {
-    const labels: Record<SkillBaseVersion["source"], string> = {
-      build: "Build",
-      merge: "Merge",
-      "auto-merge": "Auto Merge",
-      "auto-learn": "Auto-learn",
-      restore: "Restore",
-      upload: "Upload",
-      seed: "Seed",
-    };
-    return labels[source] || source;
   };
 
   return (
@@ -331,6 +303,15 @@ export default function SkillBasesPage() {
                   Export CSV
                 </Button>
                 <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setIrisHistoryOpen(true)}
+                  disabled={irisVersions.length === 0}
+                >
+                  <History className="h-4 w-4" />
+                  Version History ({irisVersions.length})
+                </Button>
+                <Button
                   variant="outline"
                   size="sm"
                   className="text-destructive hover:bg-destructive/10 hover:text-destructive"
@@ -341,42 +322,6 @@ export default function SkillBasesPage() {
                   Delete IRIS Skill Base
                 </Button>
               </div>
-
-              {irisVersions.length > 0 && (
-                <div className="mb-6 rounded-lg border bg-muted/30 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-sm font-medium">
-                    <History className="h-4 w-4" />
-                    Version history
-                  </div>
-                  <ul className="space-y-2 text-sm">
-                    {irisVersions.map((v) => (
-                      <li
-                        key={v.version}
-                        className="flex flex-wrap items-center justify-between gap-2 rounded border bg-background px-3 py-2"
-                      >
-                        <div>
-                          <span>
-                            Version {v.version} — {formatVersionSource(v.source)}
-                            {v.fileName ? ` — ${v.fileName}` : ""} — {v.entryCount} entries
-                            <span className="ml-2 text-xs text-muted-foreground">
-                              {new Date(v.createdAt).toLocaleString()}
-                            </span>
-                          </span>
-                          {formatMergeStats(v, "iris")}
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleIrisRestore(v.version)}
-                        >
-                          <RotateCcw className="h-3 w-3" />
-                          Restore
-                        </Button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
 
               {loading ? (
                 <p className="text-sm text-muted-foreground">Loading…</p>
@@ -442,6 +387,15 @@ export default function SkillBasesPage() {
                   Export CSV
                 </Button>
                 <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setNcHistoryOpen(true)}
+                  disabled={ncVersions.length === 0}
+                >
+                  <History className="h-4 w-4" />
+                  Version History ({ncVersions.length})
+                </Button>
+                <Button
                   variant="outline"
                   size="sm"
                   className="text-destructive hover:bg-destructive/10 hover:text-destructive"
@@ -452,42 +406,6 @@ export default function SkillBasesPage() {
                   Delete NC Skill Base
                 </Button>
               </div>
-
-              {ncVersions.length > 0 && (
-                <div className="mb-6 rounded-lg border bg-muted/30 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-sm font-medium">
-                    <History className="h-4 w-4" />
-                    Version history
-                  </div>
-                  <ul className="space-y-2 text-sm">
-                    {ncVersions.map((v) => (
-                      <li
-                        key={v.version}
-                        className="flex flex-wrap items-center justify-between gap-2 rounded border bg-background px-3 py-2"
-                      >
-                        <div>
-                          <span>
-                            Version {v.version} — {formatVersionSource(v.source)}
-                            {v.fileName ? ` — ${v.fileName}` : ""} — {v.entryCount} entries
-                            <span className="ml-2 text-xs text-muted-foreground">
-                              {new Date(v.createdAt).toLocaleString()}
-                            </span>
-                          </span>
-                          {formatMergeStats(v, "nc")}
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleNcRestore(v.version)}
-                        >
-                          <RotateCcw className="h-3 w-3" />
-                          Restore
-                        </Button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
 
               {loading ? (
                 <p className="text-sm text-muted-foreground">Loading…</p>
@@ -503,6 +421,21 @@ export default function SkillBasesPage() {
             </Card>
           </TabsContent>
         </Tabs>
+
+        <SkillBaseVersionHistoryDialog
+          open={irisHistoryOpen}
+          onOpenChange={setIrisHistoryOpen}
+          type="iris"
+          versions={irisVersions}
+          onRestore={handleIrisRestore}
+        />
+        <SkillBaseVersionHistoryDialog
+          open={ncHistoryOpen}
+          onOpenChange={setNcHistoryOpen}
+          type="nc"
+          versions={ncVersions}
+          onRestore={handleNcRestore}
+        />
       </CompanyGate>
     </div>
   );

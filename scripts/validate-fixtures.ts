@@ -1,3 +1,5 @@
+import { loadEnvLocal } from "@/lib/db/load-env";
+import { getPool } from "@/lib/db/pool";
 import fs from "fs/promises";
 import path from "path";
 import ExcelJS from "exceljs";
@@ -35,6 +37,7 @@ async function createUncodedNcWorkbook(): Promise<Buffer> {
 }
 
 async function main() {
+  loadEnvLocal();
   const root = process.cwd();
   const irisFixture = path.join(root, "test7033.xlsx");
   const ncFixture = path.join(root, "docs", "7033NC.xlsx");
@@ -301,9 +304,15 @@ async function main() {
   }
 
   console.log("\nOutput written to tmp/validation/");
+  await getPool().end();
 }
 
-main().catch((err) => {
+main().catch(async (err) => {
   console.error(err);
+  try {
+    await getPool().end();
+  } catch {
+    // pool may not be initialized
+  }
   process.exit(1);
 });

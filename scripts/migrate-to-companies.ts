@@ -1,3 +1,4 @@
+import { loadEnvLocal } from "@/lib/db/load-env";
 import fs from "fs/promises";
 import path from "path";
 import {
@@ -18,6 +19,7 @@ async function readLegacyKb<T>(type: "iris" | "nc"): Promise<T[]> {
 }
 
 async function main() {
+  loadEnvLocal();
   const companyId = "7033";
   const companyName = "Forest Car Company Ltd";
 

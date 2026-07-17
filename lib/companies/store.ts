@@ -1,18 +1,26 @@
-import fs from "fs/promises";
-import path from "path";
 import type { Company, IrisSkillEntry, NcSkillEntry } from "@/types";
+import {
+  dbCompanyExists,
+  dbCountIrisEntries,
+  dbCountNcEntries,
+  dbGetCompany,
+  dbInsertCompany,
+  dbListCompanies,
+  dbTouchCompanyUpdatedAt,
+  dbUpdateCompany,
+} from "@/lib/db/queries/companies";
+import {
+  dbReadIrisEntries,
+  dbReadNcEntries,
+  dbWriteIrisEntries,
+  dbWriteNcEntries,
+} from "@/lib/db/queries/entries";
 
 export type { Company };
 
 export interface CompanySummary extends Company {
   irisCount: number;
   ncCount: number;
-}
-
-const COMPANIES_ROOT = path.join(process.cwd(), "data", "companies");
-
-function companyDir(id: string): string {
-  return path.join(COMPANIES_ROOT, id);
 }
 
 function slugify(name: string): string {
@@ -23,53 +31,24 @@ function slugify(name: string): string {
     .slice(0, 40);
 }
 
-async function readJsonFile<T>(filePath: string, fallback: T): Promise<T> {
-  try {
-    const raw = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(raw) as T;
-  } catch {
-    return fallback;
-  }
-}
-
-async function writeJsonFile(filePath: string, data: unknown): Promise<void> {
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
-}
-
 export async function companyExists(id: string): Promise<boolean> {
-  try {
-    await fs.access(path.join(companyDir(id), "company.json"));
-    return true;
-  } catch {
-    return false;
-  }
+  return dbCompanyExists(id);
 }
 
 export async function listCompanies(): Promise<CompanySummary[]> {
-  await fs.mkdir(COMPANIES_ROOT, { recursive: true });
-  const entries = await fs.readdir(COMPANIES_ROOT, { withFileTypes: true });
-  const companies: CompanySummary[] = [];
-
-  for (const entry of entries) {
-    if (!entry.isDirectory()) continue;
-    const company = await getCompany(entry.name);
-    if (!company) continue;
-    const iris = await readCompanyKnowledgeBase<IrisSkillEntry>(entry.name, "iris");
-    const nc = await readCompanyKnowledgeBase<NcSkillEntry>(entry.name, "nc");
-    companies.push({
+  const companies = await dbListCompanies();
+  const summaries = await Promise.all(
+    companies.map(async (company) => ({
       ...company,
-      irisCount: iris.length,
-      ncCount: nc.length,
-    });
-  }
-
-  return companies.sort((a, b) => a.name.localeCompare(b.name));
+      irisCount: await dbCountIrisEntries(company.id),
+      ncCount: await dbCountNcEntries(company.id),
+    }))
+  );
+  return summaries;
 }
 
 export async function getCompany(id: string): Promise<Company | null> {
-  const filePath = path.join(companyDir(id), "company.json");
-  return readJsonFile<Company | null>(filePath, null);
+  return dbGetCompany(id);
 }
 
 export async function ensureCompany(id: string, name: string): Promise<Company> {
@@ -84,19 +63,13 @@ export async function ensureCompany(id: string, name: string): Promise<Company> 
     createdAt: now,
     updatedAt: now,
   };
-  const dir = companyDir(id);
-  await fs.mkdir(dir, { recursive: true });
-  await writeJsonFile(path.join(dir, "company.json"), company);
-  await writeJsonFile(path.join(dir, "iris.json"), []);
-  await writeJsonFile(path.join(dir, "nc.json"), []);
+  await dbInsertCompany(company);
   return company;
 }
 
 export async function createCompany(name: string): Promise<Company> {
   const trimmed = name.trim();
   if (!trimmed) throw new Error("Company name is required");
-
-  await fs.mkdir(COMPANIES_ROOT, { recursive: true });
 
   const numericMatch = trimmed.match(/\b(\d{3,6})\b/);
   let baseId = numericMatch ? numericMatch[1] : slugify(trimmed);
@@ -118,12 +91,7 @@ export async function createCompany(name: string): Promise<Company> {
     updatedAt: now,
   };
 
-  const dir = companyDir(id);
-  await fs.mkdir(dir, { recursive: true });
-  await writeJsonFile(path.join(dir, "company.json"), company);
-  await writeJsonFile(path.join(dir, "iris.json"), []);
-  await writeJsonFile(path.join(dir, "nc.json"), []);
-
+  await dbInsertCompany(company);
   return company;
 }
 
@@ -132,8 +100,10 @@ export async function readCompanyKnowledgeBase<T>(
   type: "iris" | "nc"
 ): Promise<T[]> {
   if (!(await companyExists(companyId))) return [];
-  const filePath = path.join(companyDir(companyId), `${type}.json`);
-  return readJsonFile<T[]>(filePath, []);
+  if (type === "iris") {
+    return (await dbReadIrisEntries(companyId)) as T[];
+  }
+  return (await dbReadNcEntries(companyId)) as T[];
 }
 
 export async function updateCompany(
@@ -149,7 +119,7 @@ export async function updateCompany(
   }
   company.updatedAt = new Date().toISOString();
 
-  await writeJsonFile(path.join(companyDir(id), "company.json"), company);
+  await dbUpdateCompany(company);
   return company;
 }
 
@@ -161,13 +131,12 @@ export async function writeCompanyKnowledgeBase<T>(
   if (!(await companyExists(companyId))) {
     throw new Error(`Company ${companyId} not found`);
   }
-  const filePath = path.join(companyDir(companyId), `${type}.json`);
-  await writeJsonFile(filePath, entries);
 
-  const companyPath = path.join(companyDir(companyId), "company.json");
-  const company = await readJsonFile<Company | null>(companyPath, null);
-  if (company) {
-    company.updatedAt = new Date().toISOString();
-    await writeJsonFile(companyPath, company);
+  if (type === "iris") {
+    await dbWriteIrisEntries(companyId, entries as IrisSkillEntry[]);
+  } else {
+    await dbWriteNcEntries(companyId, entries as NcSkillEntry[]);
   }
+
+  await dbTouchCompanyUpdatedAt(companyId);
 }

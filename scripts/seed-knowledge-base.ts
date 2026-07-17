@@ -1,3 +1,4 @@
+import { loadEnvLocal } from "@/lib/db/load-env";
 import ExcelJS from "exceljs";
 import fs from "fs/promises";
 import path from "path";
@@ -64,6 +65,7 @@ async function parseNcSeed(filePath: string): Promise<NcSkillEntry[]> {
 }
 
 async function main() {
+  loadEnvLocal();
   const root = process.cwd();
   await ensureCompany(COMPANY_ID, COMPANY_NAME);
 

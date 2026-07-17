@@ -10,7 +10,9 @@
     "lint": "node ./node_modules/next/dist/bin/next lint",
     "seed": "node ./node_modules/tsx/dist/cli.mjs scripts/seed-knowledge-base.ts",
     "migrate": "node ./node_modules/tsx/dist/cli.mjs scripts/migrate-to-companies.ts",
-    "validate": "node ./node_modules/tsx/dist/cli.mjs scripts/validate-fixtures.ts"
+    "validate": "node ./node_modules/tsx/dist/cli.mjs scripts/validate-fixtures.ts",
+    "db:init": "node ./scripts/init-db.mjs",
+    "db:import": "node ./node_modules/tsx/dist/cli.mjs scripts/import-json-to-mysql.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -29,6 +31,7 @@
     "fuse.js": "^7.1.0",
     "jszip": "^3.10.1",
     "lucide-react": "^0.475.0",
+    "mysql2": "^3.23.0",
     "next": "^15.2.0",
     "papaparse": "^5.5.2",
     "react": "^19.0.0",

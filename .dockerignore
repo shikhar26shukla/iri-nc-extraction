@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+tmp
+data/companies
+*.md
+docs
+test7033.xlsx
+*.xlsx
+.cursor
+.vscode

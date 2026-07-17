@@ -1,0 +1,57 @@
+[
+  {
+    "version": 1,
+    "createdAt": "2026-07-17T11:11:54.053Z",
+    "entryCount": 37,
+    "source": "auto-merge",
+    "fileName": "7547 NOV 24 - Copy.xlsx",
+    "mergeStats": {
+      "entryCount": 37,
+      "newParticulars": 263,
+      "updatedParticulars": 0,
+      "newDetails": 263,
+      "updatedDetails": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 0
+    }
+  },
+  {
+    "version": 3,
+    "createdAt": "2026-07-17T11:16:12.009Z",
+    "entryCount": 46,
+    "source": "auto-merge",
+    "fileName": "7547 testQE FEB 25.xlsx",
+    "mergeStats": {
+      "entryCount": 46,
+      "newParticulars": 19,
+      "updatedParticulars": 0,
+      "newDetails": 19,
+      "updatedDetails": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 334
+    }
+  },
+  {
+    "version": 4,
+    "createdAt": "2026-07-17T11:19:12.703Z",
+    "entryCount": 46,
+    "source": "upload",
+    "fileName": "before-delete"
+  },
+  {
+    "version": 5,
+    "createdAt": "2026-07-17T11:19:28.959Z",
+    "entryCount": 60,
+    "source": "auto-merge",
+    "fileName": "7547 testQE FEB 25.xlsx",
+    "mergeStats": {
+      "entryCount": 60,
+      "newParticulars": 1115,
+      "updatedParticulars": 0,
+      "newDetails": 1115,
+      "updatedDetails": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 0
+    }
+  }
+]

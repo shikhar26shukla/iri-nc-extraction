@@ -6,6 +6,7 @@
     "dev": "node ./scripts/dev.mjs",
     "dev:restart": "node ./scripts/dev.mjs --force",
     "build": "node ./scripts/build.mjs",
+    "build:docker": "node ./scripts/build-docker.mjs",
     "start": "node ./node_modules/next/dist/bin/next start",
     "lint": "node ./node_modules/next/dist/bin/next lint",
     "seed": "node ./node_modules/tsx/dist/cli.mjs scripts/seed-knowledge-base.ts",

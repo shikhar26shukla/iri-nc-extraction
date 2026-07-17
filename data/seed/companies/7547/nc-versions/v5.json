@@ -1,0 +1,646 @@
+[
+  {
+    "details": "1ST FRESH FOODS LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 57
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "ABBLITTS POTATOES AND TASTY TATES",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 5
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "ACCOUNTANCY SOLUTIONS",
+    "ncCodes": [
+      {
+        "code": "7602",
+        "count": 9
+      }
+    ],
+    "nc": "7602"
+  },
+  {
+    "details": "ADMIRAL INSURANCE",
+    "ncCodes": [
+      {
+        "code": "8204",
+        "count": 1
+      }
+    ],
+    "nc": "8204"
+  },
+  {
+    "details": "ARKAY CHILLED FOODS LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 19
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "B & J DISTRIBUTION LIMITED",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 3
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "BARCLAYS BANK PLC",
+    "ncCodes": [
+      {
+        "code": "7901",
+        "count": 15
+      },
+      {
+        "code": "7905",
+        "count": 3
+      }
+    ],
+    "nc": "7901/7905"
+  },
+  {
+    "details": "BESTWAY SWEETS",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 4
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "BIFFA WASTE SERVICES LTD",
+    "ncCodes": [
+      {
+        "code": "7801",
+        "count": 3
+      }
+    ],
+    "nc": "7801"
+  },
+  {
+    "details": "BNP PARIBAS LEASING",
+    "ncCodes": [
+      {
+        "code": "7703",
+        "count": 9
+      }
+    ],
+    "nc": "7703"
+  },
+  {
+    "details": "BOBBYS FOODS EAST ANGLIA LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 9
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "BOOKER LIMITED",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 7
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "BRAKES BROS LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 4
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "BREWBOARD LIMITED",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 1
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "BRITISH GAS",
+    "ncCodes": [
+      {
+        "code": "7201",
+        "count": 5
+      }
+    ],
+    "nc": "7201"
+  },
+  {
+    "details": "BUZZ 2000 LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 10
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "CARD CONNECTION",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 3
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "CLEAR BUSINESS",
+    "ncCodes": [
+      {
+        "code": "6900",
+        "count": 6
+      }
+    ],
+    "nc": "6900"
+  },
+  {
+    "details": "CLOSE BROTHERS BUSINESS FINANCE",
+    "ncCodes": [
+      {
+        "code": "7700",
+        "count": 14
+      }
+    ],
+    "nc": "7700"
+  },
+  {
+    "details": "CLOSE-GILL INSURANCE",
+    "ncCodes": [
+      {
+        "code": "8204",
+        "count": 9
+      }
+    ],
+    "nc": "8204"
+  },
+  {
+    "details": "COMPASS FIRE PROTECTION LTD",
+    "ncCodes": [
+      {
+        "code": "7800",
+        "count": 1
+      }
+    ],
+    "nc": "7800"
+  },
+  {
+    "details": "COSTCUTTER SUPERMARKETS GROUP LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 26
+      },
+      {
+        "code": "6900",
+        "count": 21
+      }
+    ],
+    "nc": "5000/6900"
+  },
+  {
+    "details": "D. K. TILL & SON IN LAW",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 10
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "DAVEY'S BUTCHERS",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 49
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "DAYBREAK SERVICE LTD",
+    "ncCodes": [
+      {
+        "code": "7400",
+        "count": 2
+      },
+      {
+        "code": "7304",
+        "count": 1
+      }
+    ],
+    "nc": "7400/7304"
+  },
+  {
+    "details": "DIRECT WHOLESALE FOODS",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 9
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "DOUGHTY CAKES LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 26
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "EDF ENERGY",
+    "ncCodes": [
+      {
+        "code": "7201",
+        "count": 1
+      },
+      {
+        "code": "7200",
+        "count": 1
+      }
+    ],
+    "nc": "7201/7200"
+  },
+  {
+    "details": "EXSELLENCE",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 1
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "FARRINGDON ENERGY",
+    "ncCodes": [
+      {
+        "code": "7200",
+        "count": 1
+      }
+    ],
+    "nc": "7200"
+  },
+  {
+    "details": "FIELDGATE NURSERIES",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 2
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "FLOWER FATE",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 2
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "FRESH FOODS 4U UK LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 12
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "GRAHAM'S BIN CLEANING",
+    "ncCodes": [
+      {
+        "code": "7801",
+        "count": 2
+      }
+    ],
+    "nc": "7801"
+  },
+  {
+    "details": "HAUXTON VILLAGE STORES",
+    "ncCodes": [
+      {
+        "code": "8205",
+        "count": 1
+      }
+    ],
+    "nc": "8205"
+  },
+  {
+    "details": "IMPERIAL TOBACCO LIMITED",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 3
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "KINGS SECURITY SYSTEMS LIMITED",
+    "ncCodes": [
+      {
+        "code": "7800",
+        "count": 1
+      }
+    ],
+    "nc": "7800"
+  },
+  {
+    "details": "LESLEY'S BARKING CARDS",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 8
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "MC CURRACH (BUDWEISER)",
+    "ncCodes": [
+      {
+        "code": "8205",
+        "count": 1
+      }
+    ],
+    "nc": "8205"
+  },
+  {
+    "details": "MONDELEZ UK LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 4
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "ONE STOP STORES LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 560
+      },
+      {
+        "code": "6201",
+        "count": 13
+      },
+      {
+        "code": "7905",
+        "count": 4
+      },
+      {
+        "code": "7551",
+        "count": 3
+      }
+    ],
+    "nc": "5000/6201/7905/7551"
+  },
+  {
+    "details": "PECKERS EGGS & DAIRY LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 2
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "PROPEL FINANCE GROUP",
+    "ncCodes": [
+      {
+        "code": "7100",
+        "count": 7
+      }
+    ],
+    "nc": "7100"
+  },
+  {
+    "details": "REACH",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 2
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "RIJO 42 INGREDIENTS LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 1
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "ROYAL EGGS UK",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 15
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "S&G FOOD LTD",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 25
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "SCOTTISH COMMUNITY DEVELOPMENT CENTRE(SCDC)",
+    "ncCodes": [
+      {
+        "code": "7103",
+        "count": 5
+      }
+    ],
+    "nc": "7103"
+  },
+  {
+    "details": "SCOTTISH WIDOWS",
+    "ncCodes": [
+      {
+        "code": "8204",
+        "count": 6
+      }
+    ],
+    "nc": "8204"
+  },
+  {
+    "details": "SMITHS NEWS",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 18
+      },
+      {
+        "code": "7501",
+        "count": 1
+      },
+      {
+        "code": "5100",
+        "count": 1
+      }
+    ],
+    "nc": "5000/7501/5100"
+  },
+  {
+    "details": "SOURCE FOR BUSINESS",
+    "ncCodes": [
+      {
+        "code": "7102",
+        "count": 1
+      }
+    ],
+    "nc": "7102"
+  },
+  {
+    "details": "SOUTH CAMBRIDGESHIRE DISTRICT COUNCIL",
+    "ncCodes": [
+      {
+        "code": "7103",
+        "count": 2
+      }
+    ],
+    "nc": "7103"
+  },
+  {
+    "details": "SUNDRY EXPENSE",
+    "ncCodes": [
+      {
+        "code": "6900",
+        "count": 3
+      },
+      {
+        "code": "8250",
+        "count": 1
+      },
+      {
+        "code": "7800",
+        "count": 1
+      }
+    ],
+    "nc": "6900/8250/7800"
+  },
+  {
+    "details": "SUNDRY PURCHASE",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 1
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "TEATIME TASTIES LIMITED",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 2
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "THE BAKERS BEST",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 21
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "THE TASTE OF SUFFOLK",
+    "ncCodes": [
+      {
+        "code": "5000",
+        "count": 24
+      }
+    ],
+    "nc": "5000"
+  },
+  {
+    "details": "TOM HYDE & SON",
+    "ncCodes": [
+      {
+        "code": "7500",
+        "count": 4
+      }
+    ],
+    "nc": "7500"
+  },
+  {
+    "details": "TV LICENCE",
+    "ncCodes": [
+      {
+        "code": "8201",
+        "count": 9
+      }
+    ],
+    "nc": "8201"
+  },
+  {
+    "details": "WAVE",
+    "ncCodes": [
+      {
+        "code": "7102",
+        "count": 2
+      }
+    ],
+    "nc": "7102"
+  }
+]

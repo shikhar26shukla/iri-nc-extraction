@@ -36,6 +36,9 @@ yarn-error.log*
 # temp uploads
 /tmp/
 
+# legacy JSON runtime copies (seed data lives in data/seed/companies/)
+/data/companies/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

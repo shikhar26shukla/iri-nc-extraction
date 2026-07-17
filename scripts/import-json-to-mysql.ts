@@ -13,7 +13,10 @@ import {
 import { dbInsertVersionSnapshot } from "@/lib/db/queries/versions";
 import type { Company, IrisSkillEntry, NcSkillEntry, SkillBaseVersion } from "@/types";
 
-const COMPANIES_ROOT = path.join(process.cwd(), "data", "companies");
+const COMPANIES_ROOT = path.resolve(
+  process.cwd(),
+  process.env.SEED_COMPANIES_DIR || path.join("data", "seed", "companies")
+);
 
 async function readJsonFile<T>(filePath: string): Promise<T | null> {
   try {
@@ -133,7 +136,7 @@ async function main() {
   const companyIds = entries.filter((e) => e.isDirectory()).map((e) => e.name);
 
   if (companyIds.length === 0) {
-    console.log("No companies found in data/companies/");
+    console.log(`No companies found in ${COMPANIES_ROOT}`);
     return;
   }
 

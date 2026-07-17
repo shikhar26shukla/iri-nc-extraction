@@ -131,5 +131,33 @@
       "newCodes": 0,
       "duplicatesMerged": 0
     }
+  },
+  {
+    "version": 17,
+    "createdAt": "2026-07-17T11:09:37.169Z",
+    "entryCount": 305,
+    "source": "auto-merge",
+    "fileName": "test7033.xlsx",
+    "mergeStats": {
+      "entryCount": 305,
+      "newParticulars": 372,
+      "updatedParticulars": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 0
+    }
+  },
+  {
+    "version": 19,
+    "createdAt": "2026-07-17T11:09:40.160Z",
+    "entryCount": 305,
+    "source": "auto-merge",
+    "fileName": "test7033.xlsx",
+    "mergeStats": {
+      "entryCount": 305,
+      "newParticulars": 0,
+      "updatedParticulars": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 372
+    }
   }
 ]

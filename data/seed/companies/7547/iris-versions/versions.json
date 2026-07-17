@@ -1,0 +1,16 @@
+[
+  {
+    "version": 1,
+    "createdAt": "2026-07-17T10:43:16.019Z",
+    "entryCount": 1355,
+    "source": "auto-merge",
+    "fileName": "iris_7547.xlsx",
+    "mergeStats": {
+      "entryCount": 1355,
+      "newParticulars": 2716,
+      "updatedParticulars": 0,
+      "newCodes": 0,
+      "duplicatesMerged": 0
+    }
+  }
+]

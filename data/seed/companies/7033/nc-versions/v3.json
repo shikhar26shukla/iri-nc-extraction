@@ -1,0 +1,368 @@
+[
+  {
+    "details": "ACCOUNATANCY SOLUTIONS",
+    "ncCodes": [
+      {
+        "code": "7602",
+        "count": 3
+      }
+    ],
+    "nc": "7602"
+  },
+  {
+    "details": "AGS WINDSCREEN",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 1
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "AMAZON",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 16
+      },
+      {
+        "code": "6900",
+        "count": 15
+      },
+      {
+        "code": "7552",
+        "count": 6
+      }
+    ],
+    "nc": "5010/6900/7552"
+  },
+  {
+    "details": "AUTO TRADER LIMITED",
+    "ncCodes": [
+      {
+        "code": "6201",
+        "count": 74
+      }
+    ],
+    "nc": "6201"
+  },
+  {
+    "details": "B&Q",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 2
+      },
+      {
+        "code": "7800",
+        "count": 2
+      }
+    ],
+    "nc": "5010/7800"
+  },
+  {
+    "details": "BARCLAYS BANK",
+    "ncCodes": [
+      {
+        "code": "7901",
+        "count": 3
+      }
+    ],
+    "nc": "7901"
+  },
+  {
+    "details": "BAXENDEN CAR BREAKERS LTD",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 1
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "BRENTWOOD AUTO SPARES",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 1
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "COSTCO WHOLESALE",
+    "ncCodes": [
+      {
+        "code": "8250",
+        "count": 11
+      }
+    ],
+    "nc": "8250"
+  },
+  {
+    "details": "CROWN CARS",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 6
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "CUSTOM CAR LTD",
+    "ncCodes": [
+      {
+        "code": "7304",
+        "count": 5
+      }
+    ],
+    "nc": "7304"
+  },
+  {
+    "details": "DVLA",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 4
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "EBAY",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 37
+      },
+      {
+        "code": "8250",
+        "count": 2
+      },
+      {
+        "code": "6900",
+        "count": 1
+      }
+    ],
+    "nc": "5010/8250/6900"
+  },
+  {
+    "details": "HOMEBASE",
+    "ncCodes": [
+      {
+        "code": "7800",
+        "count": 4
+      }
+    ],
+    "nc": "7800"
+  },
+  {
+    "details": "LEADSIDE TIMBER & BUILDER MERCHANTS LTD",
+    "ncCodes": [
+      {
+        "code": "7800",
+        "count": 1
+      }
+    ],
+    "nc": "7800"
+  },
+  {
+    "details": "LEGAL SOLUTIONS 4 U",
+    "ncCodes": [
+      {
+        "code": "7603",
+        "count": 1
+      }
+    ],
+    "nc": "7603"
+  },
+  {
+    "details": "M&A HERTFORD LTD",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 1
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "MATT COLE",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 1
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "MICROSOFT",
+    "ncCodes": [
+      {
+        "code": "7552",
+        "count": 2
+      }
+    ],
+    "nc": "7552"
+  },
+  {
+    "details": "ONE STOP BUILDERS MERCHANTS (ENFIELD) LTD",
+    "ncCodes": [
+      {
+        "code": "7800",
+        "count": 4
+      }
+    ],
+    "nc": "7800"
+  },
+  {
+    "details": "PAYPAL",
+    "ncCodes": [
+      {
+        "code": "7552",
+        "count": 4
+      },
+      {
+        "code": "7800",
+        "count": 4
+      },
+      {
+        "code": "5010",
+        "count": 3
+      }
+    ],
+    "nc": "7552/7800/5010"
+  },
+  {
+    "details": "PETROL EXPENSE",
+    "ncCodes": [
+      {
+        "code": "7300",
+        "count": 16
+      }
+    ],
+    "nc": "7300"
+  },
+  {
+    "details": "POST OFFICE LTD",
+    "ncCodes": [
+      {
+        "code": "7501",
+        "count": 1
+      }
+    ],
+    "nc": "7501"
+  },
+  {
+    "details": "REFRESHMENT",
+    "ncCodes": [
+      {
+        "code": "8205",
+        "count": 13
+      }
+    ],
+    "nc": "8205"
+  },
+  {
+    "details": "SCREWFIX",
+    "ncCodes": [
+      {
+        "code": "7800",
+        "count": 1
+      }
+    ],
+    "nc": "7800"
+  },
+  {
+    "details": "SPEARMINT DESIGN",
+    "ncCodes": [
+      {
+        "code": "7603",
+        "count": 1
+      }
+    ],
+    "nc": "7603"
+  },
+  {
+    "details": "SUNDRY EXPENSE",
+    "ncCodes": [
+      {
+        "code": "8250",
+        "count": 9
+      },
+      {
+        "code": "7800",
+        "count": 1
+      },
+      {
+        "code": "7500",
+        "count": 1
+      }
+    ],
+    "nc": "8250/7800/7500"
+  },
+  {
+    "details": "SW MOTOR FACTORS LTD",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 99
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "TW PARKER (CHESHUNT) LTD",
+    "ncCodes": [
+      {
+        "code": "7800",
+        "count": 2
+      }
+    ],
+    "nc": "7800"
+  },
+  {
+    "details": "URBAN AUTO",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 10
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "VIRTO DRY",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 8
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "WARRANTY SOLUTION GROUP LTD",
+    "ncCodes": [
+      {
+        "code": "5010",
+        "count": 6
+      }
+    ],
+    "nc": "5010"
+  },
+  {
+    "details": "WICKES",
+    "ncCodes": [
+      {
+        "code": "7800",
+        "count": 11
+      }
+    ],
+    "nc": "7800"
+  }
+]
